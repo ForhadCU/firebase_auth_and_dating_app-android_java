@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "917436912998",
+    "project_id": "deet-teet-b5482",
+    "storage_bucket": "deet-teet-b5482.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917436912998:android:3f66f748c1909eaf09e4a7",
+        "android_client_info": {
+          "package_name": "com.maan.deetteet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917436912998-1mt2esokhevpmlfomplv9ln943qc2hcf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.maan.deetteet",
+            "certificate_hash": "4259fd1f916e11650ad5cad2b986262e31b2aaa3"
+          }
+        },
+        {
+          "client_id": "917436912998-nja8g2l3qg2u6fnv4dgd3a18qq8bl3qs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl86fIzxtykeOfZKGNIUE2Klb4PHmUKhQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917436912998-eetg4b3r7gnt2ocq3slrbh9c0fcup7rm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

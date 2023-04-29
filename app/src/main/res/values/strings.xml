@@ -1,0 +1,38 @@
+<resources>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="facebook_app_id">1264407784514352</string>
+    <!--    <string name="my_web_client_id">917436912998-nja8g2l3qg2u6fnv4dgd3a18qq8bl3qs.apps.googleusercontent.com</string>-->
+    <string name="fb_login_protocol_scheme">67965cfdb6a36aca30f6ed94d2a10666</string>
+    <string name="perfect_matches_for_you">Perfect matches for you</string>
+
+
+    <string name="googlepay_status_unavailable">Unfortunately, Google Pay is not available on this device.</string>
+    <string name="payments_show_name">Successfully received payment data for %s!</string>
+    <string name="gateway_replace_name_example">"Gateway name set to \"example\" - please modify Constants.java and replace it with your own gateway."</string>
+    <string name="checkout_item_description">Description</string>
+    <string name="play_lic_key">---------</string>
+    <!--google admob-->
+    <string name="admob_app_id">ca-app-pub-1437153974595170~9914070110</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="you_can_chat_whatever_you_want_chat_history_will_be_cleared_once_you_leave_the_room">You can chat whatever you want, chat history will be cleared once you leave the room.</string>
+    <string name="ads">Ads</string>
+    <string name="report">Report</string>
+    <string name="block">Block</string>
+    <string name="app_name">Deet Teet</string>
+    <!-- <string name="admoob_interestial">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="admob_rewarded">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="admob_native">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="admob_banner">ca-app-pub-3940256099942544/630097811</string>
+
+    <string name="facebook_interstial">IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID</string>
+    <string name="facebook_native">CAROUSEL_IMG_SQUARE_APP_INSTALL#YOUR_PLACEMENT_ID</string>
+    <string name="facebookbanner">IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID</string>-->
+</resources>
+
