@@ -50,6 +50,7 @@ public class StrimmingFragment extends Fragment {
     SessionManager sessionManager;
     private int start = 0;
     private Call<CountryVideoListRoot> call;
+    private String TAG = "StrimmingFragment";
 
     public StrimmingFragment() {
         //
@@ -82,6 +83,7 @@ public class StrimmingFragment extends Fragment {
         binding.shimmerCountry.startShimmer();
         binding.shimmerCountry.setVisibility(View.VISIBLE);
         List<CountryRoot.DataItem> countries = sessionManager.getCountry();
+        Log.d(TAG, "getCountryData: ");
         if (countries != null) {
             countryAdapter.addData(countries);
             getGirlsList(countries.get(0));

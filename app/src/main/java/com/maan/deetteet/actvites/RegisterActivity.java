@@ -104,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 //                Log.d(TAG, "onActivityResult: LoggedIn");
-                firebaseAuthWithGoogle(account.getIdToken());
+                firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in is failed", e);
@@ -114,8 +114,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     // Authenticate with Firebase using the Google token
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -125,7 +125,13 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
 
                             FirebaseUser user = firebaseAuth.getCurrentUser();
+
                             Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_SHORT).show();
+
+                            Call<UserRoot> call = RetrofitBuilder.create().registerUser(Const.DEV_KEY, "notificationToken", account.getEmail(),
+                                    account.getDisplayName(), "google", account.getEmail(), account.getEmail(), "android");
+                            registerUser(call);
+
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                             finish();
@@ -228,8 +234,8 @@ public class RegisterActivity extends AppCompatActivity {
                     }
 
                     Log.d("TAG", "onResponse: usercreted success");
-                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                    finish();
+                   /* startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    finish();*/
                 }
 
 
@@ -264,6 +270,16 @@ public class RegisterActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             Log.d(TAG, "onComplete: Success");
                                             Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_SHORT).show();
+
+//                                            save data to server
+                                            Call<UserRoot> call = RetrofitBuilder.create().registerUser(
+                                                    Const.DEV_KEY, "notificationToken",
+                                                    binding.inputEmail.getText().toString().trim(), binding.inputFullName.getText().toString().trim()
+                                                    , "google", binding.inputEmail.getText().toString().trim(),
+                                                    binding.inputEmail.getText().toString().trim(), "android");
+                                            registerUser(call);
+
+
                                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                             startActivity(intent);
                                             finish();

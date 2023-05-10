@@ -225,7 +225,10 @@ public class CallAcceptActivity extends BaseActivity implements PaymentResultLis
             binding.lytconnected.setVisibility(View.VISIBLE);
 
             String rate = callGirl.getRate();
+            Log.d(TAG, "setUI: Rate"+ rate);
             User user = sessionManager.getUser();
+            Log.d(TAG, "setUI: User"+ user.toString());
+
             if (Integer.parseInt(user.getMyWallet()) >= Integer.parseInt(rate)) {
                 new Handler().postDelayed(() -> {
                     Intent intent = new Intent(CallAcceptActivity.this, CallScreenActivity.class);

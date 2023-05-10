@@ -21,8 +21,8 @@
             android:layout_marginEnd="10dp"
             android:padding="2dp"
             android:src="@drawable/ic_conversation"
-            android:tint="@color/white"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:tint="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -18,14 +19,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.maan.deetteet.R;
+import com.maan.deetteet.SessionManager;
 import com.maan.deetteet.databinding.ActivityLoginBinding;
+import com.maan.deetteet.models.UserRoot;
+import com.maan.deetteet.retrofit.Const;
+import com.maan.deetteet.retrofit.RetrofitBuilder;
+
+import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "LG";
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private ActivityLoginBinding binding;
+    private String userTkn;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         //this is where we start the Auth state Listener to listen for whether the user is signed in or not
         mCheckCurrentUser();
+        /*if (!sessionManager.getStringValue(Const.USER_TOKEN).isEmpty())
+            Log.d(TAG, "onCreate: Token" + sessionManager.getStringValue(Const.USER_TOKEN));*/
     }
 
     private void mCheckCurrentUser() {
@@ -75,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             binding.btnTxt.setVisibility(View.GONE);
             binding.progressBarSignIn.setVisibility(View.VISIBLE);
 
-            Log.d(TAG, "onClickSignInWithEmailPassword: Pass: "+ binding.inputPassword.getText().toString().trim());
+            Log.d(TAG, "onClickSignInWithEmailPassword: Pass: " + binding.inputPassword.getText().toString().trim());
 
 //              Sign in with email and password
             firebaseAuth.signInWithEmailAndPassword(
@@ -87,6 +98,15 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         Log.d(TAG, "onComplete: Success");
+
+                                      FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                        assert user != null;
+                                        Log.d(TAG, "onComplete: UserData"+ user.getDisplayName());
+                                       /* Call<UserRoot> call = RetrofitBuilder.create().registerUser(Const.DEV_KEY, "notificationToken", account.getEmail(),
+                                                account.getDisplayName(), "google", account.getEmail(), account.getEmail(), "android");
+                                        registerUser(call);*/
+
                                         Toast.makeText(getApplicationContext(), "Signed in", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         startActivity(intent);
@@ -102,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                             binding.btnTxt.setVisibility(View.VISIBLE);
                             binding.progressBarSignIn.setVisibility(View.GONE);
                             Log.e(TAG, "onComplete: Error", e);
-                            Toast.makeText(LoginActivity.this,  e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
 
                         }
                     });
