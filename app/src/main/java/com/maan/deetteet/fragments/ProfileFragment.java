@@ -185,7 +185,7 @@ public class ProfileFragment extends Fragment {
         super.onResume();
         if (sessionManager.getBooleanValue(Const.IS_LOGIN)) {
             userTkn = sessionManager.getUser().getToken();
-            Log.d("TAG", "onActivityResumed: tkn== " + userTkn);
+            Log.d("MyTest", "onActivityResumed: tkn== " + userTkn);
             getData();
         }
     }

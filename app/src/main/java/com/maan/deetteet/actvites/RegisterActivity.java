@@ -21,15 +21,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.maan.deetteet.R;
 import com.maan.deetteet.SessionManager;
 import com.maan.deetteet.databinding.ActivityRegisterBinding;
+import com.maan.deetteet.models.User;
 import com.maan.deetteet.models.UserRoot;
 import com.maan.deetteet.retrofit.Const;
 import com.maan.deetteet.retrofit.RetrofitBuilder;
@@ -49,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
 //    private FirebaseAuth mAuth;
 
     //Updated.........................
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "MyTag";
     private GoogleSignInClient googleSignInClient;
     private static final int RC_SIGN_IN = 1;
     String name, email;
@@ -132,10 +136,10 @@ public class RegisterActivity extends AppCompatActivity {
                                     account.getDisplayName(), "google", account.getEmail(), account.getEmail(), "android");
                             registerUser(call);
 
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                           /* Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                             finish();
-
+*/
                             // ...
                         } /*else {
                             // Sign in failed, display a message to the user.
@@ -173,7 +177,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     public void onClickAlreadyHaveAccount(View view) {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
     }
 
@@ -226,12 +230,20 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(@Nullable Call<UserRoot> call, @Nullable Response<UserRoot> response) {
                 if (response.code() == 200 && response.body().isStatus() && response.body().getData() != null) {
+                    Log.d("DevTestReg",
+                            "onResponse: User email from Server " + response.body().toString());
                     sessionManager.saveUser(response.body().getData());
                     sessionManager.saveBooleanValue(Const.IS_LOGIN, true);
                     if (response.body() != null) {
                         sessionManager.saveStringValue(Const.USER_TOKEN, response.body().getData().getToken());
+                        Log.d("TokenFromReg", "onResponse: " + response.body().getData().getToken());
+
+//                        Store user token to the firebaseFirestore
+                        mSaveTokenToFirebase(response.body().getData().getUserEmail(), response.body().getData().getToken())
+                        ;
 
                     }
+
 
                     Log.d("TAG", "onResponse: usercreted success");
                    /* startActivity(new Intent(RegisterActivity.this, MainActivity.class));
@@ -249,6 +261,25 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.d("TAG", "faill " + t);
             }
         });
+    }
+
+    private void mSaveTokenToFirebase(String email, String token) {
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = firebaseFirestore.collection("USER_TOKEN").document(email);
+        User user = new User();
+        user.setToken(token);
+        documentReference.set(
+                user
+        ).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG, "onSuccess: OK. Token saved.");
+               /* Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();*/
+            }
+        });
+
     }
 
 
@@ -280,9 +311,9 @@ public class RegisterActivity extends AppCompatActivity {
                                             registerUser(call);
 
 
-                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                       /*     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                             startActivity(intent);
-                                            finish();
+                                            finish();*/
                                         } /*else {
                                             Log.e(TAG, "onComplete: Error");
                                             Toast.makeText(RegisterActivity.this, "Connection error!", Toast.LENGTH_SHORT).show();
@@ -293,7 +324,7 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onFailure(@NonNull Exception e) {
                                 binding.btnTxt.setVisibility(View.VISIBLE);
                                 binding.progressBarSignUp.setVisibility(View.GONE);
-                                Log.e(TAG, "onComplete: Error: "+ e.toString());
+                                Log.e(TAG, "onComplete: Error: " + e.toString());
                                 Toast.makeText(RegisterActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
                             }
                         });
